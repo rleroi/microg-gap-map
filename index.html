@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>microG gap map</title>
+<meta name="description" content="Which Google Play services features microG covers, which are missing, and how many people are waiting for each.">
+<style>
+:root {
+  --surface-0: #f4f4f1;
+  --surface-1: #fcfcfb;
+  --surface-2: #ecebe7;
+  --border: #d9d8d2;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #77766f;
+  --link: #1f5fb4;
+  --works: #0ca30c;
+  --mostly: #7cc77c;
+  --partial: #fab219;
+  --missing: #ec835a;
+  --blocked: #d03b3b;
+  --notIntended: #9a9890;
+  --tile-alpha: 0.18;
+  --shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface-0: #121211;
+    --surface-1: #1a1a19;
+    --surface-2: #252523;
+    --border: #3a3936;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #9a998f;
+    --link: #7fb2f0;
+    --notIntended: #7d7c74;
+    --tile-alpha: 0.26;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  --surface-0: #121211;
+  --surface-1: #1a1a19;
+  --surface-2: #252523;
+  --border: #3a3936;
+  --text-primary: #f0efec;
+  --text-secondary: #c3c2b7;
+  --text-muted: #9a998f;
+  --link: #7fb2f0;
+  --notIntended: #7d7c74;
+  --tile-alpha: 0.26;
+  --shadow: none;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+a { color: var(--link); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 64px; }
+header h1 { font-size: clamp(26px, 4vw, 38px); line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.01em; }
+header .lede { font-size: 17px; color: var(--text-secondary); max-width: 760px; margin: 0 0 8px; }
+header .context { font-size: 14px; color: var(--text-muted); max-width: 760px; margin: 0; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.theme-btn { flex: none; border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary); border-radius: 8px; padding: 6px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+
+/* summary bar */
+.summary { margin: 28px 0 8px; background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px; box-shadow: var(--shadow); }
+.summary h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin: 0 0 10px; font-weight: 600; }
+.bar { display: flex; height: 18px; border-radius: 4px; overflow: hidden; gap: 2px; background: var(--surface-1); }
+.bar span { display: block; height: 100%; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary); border-radius: 999px; padding: 4px 10px 4px 8px; font: inherit; font-size: 13px; cursor: pointer; }
+.chip[aria-pressed="false"] { opacity: .45; }
+.chip .count { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.hint { font-size: 13px; color: var(--text-muted); margin: 10px 0 0; }
+
+/* areas */
+.areas { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-top: 20px; }
+.area { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px 14px 16px; box-shadow: var(--shadow); }
+.area h3 { margin: 0 0 2px; font-size: 16px; }
+.area .meta { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+.map { position: relative; width: 100%; height: 280px; }
+.tile { position: absolute; border-radius: 6px; overflow: hidden; cursor: pointer; border: 0; padding: 0; text-align: left; font: inherit; color: var(--text-primary);
+  background: color-mix(in srgb, var(--c) calc(var(--tile-alpha) * 100%), var(--surface-1));
+  box-shadow: inset 4px 0 0 var(--c); transition: transform .12s ease, box-shadow .12s ease; }
+.tile:hover, .tile:focus-visible { box-shadow: inset 4px 0 0 var(--c), 0 0 0 2px var(--c); outline: none; z-index: 2; }
+.tile.dim { opacity: .18; }
+.tile .in { position: absolute; inset: 0; padding: 7px 8px 6px 11px; display: flex; flex-direction: column; justify-content: space-between; }
+.tile .name { font-weight: 600; font-size: 13px; line-height: 1.2; }
+.tile .sub { font-size: 11.5px; color: var(--text-secondary); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.tile .bounty { font-size: 11px; font-weight: 700; background: var(--text-primary); color: var(--surface-1); border-radius: 4px; padding: 0 5px; }
+.tile .name { flex: 0 1 auto; min-height: 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow-wrap: break-word; hyphens: auto; }
+.tile .sub { flex: none; }
+.tile.short .name { -webkit-line-clamp: 1; }
+.tile .in { gap: 4px; }
+.tile.tiny .sub, .tile.tiny .bounty { display: none; }
+.tile.micro .in { padding: 0; align-items: center; justify-content: center; }
+.tile.micro .name { display: none; }
+.tile .micro-icon { display: none; font-size: 15px; font-weight: 700; }
+.tile.micro .micro-icon { display: block; }
+.icon { font-weight: 700; }
+
+/* tooltip */
+.tip { position: fixed; pointer-events: none; z-index: 20; background: var(--surface-1); color: var(--text-primary); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 13px; max-width: 280px; box-shadow: 0 6px 24px rgba(0,0,0,.18); display: none; }
+.tip b { display: block; margin-bottom: 2px; }
+.tip .muted { color: var(--text-secondary); }
+
+/* detail panel */
+dialog { border: 1px solid var(--border); border-radius: 14px; padding: 0; max-width: 560px; width: calc(100% - 32px); background: var(--surface-1); color: var(--text-primary); }
+dialog::backdrop { background: rgba(0,0,0,.4); }
+.dlg { padding: 20px 22px 18px; }
+.dlg h2 { margin: 0 0 6px; font-size: 22px; }
+.status-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; border-radius: 999px; padding: 2px 10px 2px 8px; background: color-mix(in srgb, var(--c) 22%, var(--surface-1)); }
+.dlg p { color: var(--text-secondary); }
+.dlg .progress { color: var(--text-primary); background: var(--surface-2); border-radius: 8px; padding: 8px 10px; font-size: 14px; }
+.dlg table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+.dlg th, .dlg td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--border); }
+.dlg td.num, .dlg th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.dlg .close { float: right; border: 0; background: transparent; color: var(--text-secondary); font-size: 22px; cursor: pointer; line-height: 1; }
+.dlg .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; font-size: 14px; }
+
+/* sections */
+section.info { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 32px; }
+section.info > div { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+section.info h2 { font-size: 16px; margin: 0 0 6px; }
+section.info p, section.info li { color: var(--text-secondary); font-size: 14px; }
+section.info ul { padding-left: 18px; margin: 6px 0 0; }
+details.table { margin-top: 24px; background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; }
+details.table summary { cursor: pointer; font-weight: 600; }
+details.table table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+details.table th, details.table td { text-align: left; padding: 6px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+details.table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+footer { margin-top: 32px; font-size: 13px; color: var(--text-muted); }
+@media (max-width: 420px) { .areas { grid-template-columns: 1fr; } .map { height: 320px; } }
+@media (forced-colors: active) { .tile { border: 1px solid CanvasText; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div>
+        <h1>What still ties Android to Google Play services?</h1>
+        <p class="lede">microG is the open-source replacement for Google Play services. This map shows which Play services features it already covers, which are missing, and how many people are waiting for each one.</p>
+        <p class="context">Why now: Google plans to require developer registration for all apps from 2027. According to <a href="https://keepandroidopen.org/" target="_blank" rel="noopener">Keep Android Open</a>, the installation of unregistered apps is controlled through Google Play services, not Android itself. Phones running a de-Googled Android with microG are outside that. Every gap closed here makes that switch easier.</p>
+      </div>
+      <button class="theme-btn" id="theme" type="button" aria-label="Toggle dark mode">◐ Theme</button>
+    </div>
+  </header>
+
+  <div class="summary">
+    <h2>Coverage across <span id="total"></span> Play services features</h2>
+    <div class="bar" id="bar" role="img"></div>
+    <div class="chips" id="chips" aria-label="Filter by status"></div>
+    <p class="hint">Tile size = people asking for it (reactions on microG's GitHub issues). Click a tile for details and links.</p>
+  </div>
+
+  <div class="areas" id="areas"></div>
+
+  <details class="table" id="tableView">
+    <summary>All features as a table</summary>
+    <div id="table"></div>
+  </details>
+
+  <section class="info">
+    <div>
+      <h2>How to help</h2>
+      <ul>
+        <li>Pick a <b>missing</b> tile, open its issue and read what is already known.</li>
+        <li>Reverse-engineer the client side and Play services side, write it down, and send focused pull requests with proof from a real device. The <a href="https://github.com/rleroi/cast-dial-notes" target="_blank" rel="noopener">Cast &amp; DIAL notes</a> show the method.</li>
+        <li>Test open pull requests on your own hardware and report results.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>What code can't fix</h2>
+      <p>Apps that demand Play Integrity's <b>device</b> or <b>strong</b> verdict (many banks, Google Wallet) only accept Google-certified, locked phones. microG can't pass that honestly. That part needs pressure on app makers and regulators.</p>
+    </div>
+    <div>
+      <h2>Sources &amp; updates</h2>
+      <p id="sources"></p>
+      <p>The data lives in <a href="data.json">data.json</a>. Corrections are welcome as pull requests.</p>
+    </div>
+  </section>
+
+  <footer>Not affiliated with microG or Google. Statuses follow microG's own wiki; tile sizes are a rough proxy for demand, not a ranking of importance.</footer>
+</div>
+
+<div class="tip" id="tip" role="tooltip"></div>
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+{
+ "updated": "2026-10-12",
+ "sources": {
+  "status": {
+   "label": "microG wiki: Implementation status (last edit 2026-06-10)",
+   "url": "https://github.com/microg/GmsCore/wiki/Implementation-status"
+  },
+  "demand": {
+   "label": "Reactions on microG GmsCore issues (2026-10-12)",
+   "url": "https://github.com/microg/GmsCore/issues?q=is%3Aissue+sort%3Areactions-%2B1-desc"
+  },
+  "problemApps": {
+   "label": "microG wiki: Problem apps",
+   "url": "https://github.com/microg/GmsCore/wiki/Problem-Apps"
+  }
+ },
+ "statuses": {
+  "works": {
+   "label": "Works",
+   "desc": "Implemented, apps using it work"
+  },
+  "mostly": {
+   "label": "Mostly works",
+   "desc": "Implemented with known gaps"
+  },
+  "partial": {
+   "label": "Partial",
+   "desc": "Some calls work, many apps still fail"
+  },
+  "missing": {
+   "label": "Missing",
+   "desc": "Not implemented yet: this is where help is needed"
+  },
+  "blocked": {
+   "label": "Blocked by design",
+   "desc": "Cannot be done honestly without Google's certification"
+  },
+  "notIntended": {
+   "label": "Not intended",
+   "desc": "Left out on purpose (tracking/ads)"
+  }
+ },
+ "areas": [
+  {
+   "id": "devices",
+   "label": "Devices & connectivity"
+  },
+  {
+   "id": "identity",
+   "label": "Identity, security & payments"
+  },
+  {
+   "id": "messaging",
+   "label": "Messaging & push"
+  },
+  {
+   "id": "media",
+   "label": "Media, games & vision"
+  },
+  {
+   "id": "location",
+   "label": "Location & maps"
+  },
+  {
+   "id": "platform",
+   "label": "Play platform"
+  }
+ ],
+ "features": [
+  {
+   "id": "rcs",
+   "name": "RCS messaging",
+   "area": "messaging",
+   "status": "missing",
+   "note": "Rich chat in Google Messages. Open bounty of $14,999, the largest on the tracker.",
+   "bounty": "$14,999",
+   "issues": [
+    {
+     "n": 2994,
+     "reactions": 87,
+     "comments": 703,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "fcm",
+   "name": "Push notifications (FCM)",
+   "area": "messaging",
+   "status": "works",
+   "note": "Firebase Cloud Messaging works. A UnifiedPush bridge is being discussed.",
+   "issues": [
+    {
+     "n": 313,
+     "reactions": 11,
+     "comments": 14,
+     "state": "closed"
+    },
+    {
+     "n": 3046,
+     "reactions": 19,
+     "comments": 0,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "wear",
+   "name": "Wear OS & watch companions",
+   "area": "devices",
+   "status": "missing",
+   "note": "Wearable API is mostly missing, so watch companion apps don't sync. Open bounty $2,340.",
+   "bounty": "$2,340",
+   "issues": [
+    {
+     "n": 4,
+     "reactions": 40,
+     "comments": 46,
+     "state": "open"
+    },
+    {
+     "n": 2843,
+     "reactions": 18,
+     "comments": 187,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "auto",
+   "name": "Android Auto",
+   "area": "devices",
+   "status": "missing",
+   "note": "Not implemented. The wiki notes it may work when the official Android Auto app is installed as a privileged app.",
+   "issues": [
+    {
+     "n": 897,
+     "reactions": 28,
+     "comments": 352,
+     "state": "closed"
+    }
+   ]
+  },
+  {
+   "id": "nearby",
+   "name": "Nearby / Quick Share",
+   "area": "devices",
+   "status": "missing",
+   "note": "Nearby connections and Quick Share (formerly Nearby Share) are not implemented.",
+   "issues": [
+    {
+     "n": 1272,
+     "reactions": 46,
+     "comments": 25,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "cast",
+   "name": "Google Cast",
+   "area": "devices",
+   "status": "partial",
+   "note": "Listed as partial in the wiki. A full implementation is in review and casts YouTube end to end on real Chromecasts.",
+   "progress": "In review: microg/GmsCore#3845 (+ fixes in woahwhattheheck/GmsCore#16)",
+   "issues": [
+    {
+     "n": 79,
+     "reactions": 22,
+     "comments": 83,
+     "state": "closed"
+    },
+    {
+     "n": 1502,
+     "reactions": 20,
+     "comments": 9,
+     "state": "closed"
+    },
+    {
+     "n": 580,
+     "reactions": 16,
+     "comments": 64,
+     "state": "open"
+    }
+   ],
+   "links": [
+    {
+     "label": "PR #3845",
+     "url": "https://github.com/microg/GmsCore/pull/3845"
+    },
+    {
+     "label": "Cast & DIAL field notes",
+     "url": "https://github.com/rleroi/cast-dial-notes"
+    }
+   ]
+  },
+  {
+   "id": "findmy",
+   "name": "Find My Device network",
+   "area": "devices",
+   "status": "missing",
+   "note": "Participation in Google's crowd-sourced Find My Device network (trackers, offline finding).",
+   "issues": [
+    {
+     "n": 1874,
+     "reactions": 23,
+     "comments": 14,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "matter",
+   "name": "Matter smart-home setup",
+   "area": "devices",
+   "status": "missing",
+   "note": "The Matter device commissioning flow apps use to add smart-home devices.",
+   "issues": [
+    {
+     "n": 2031,
+     "reactions": 10,
+     "comments": 2,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "fitness",
+   "name": "Fitness",
+   "area": "devices",
+   "status": "missing",
+   "note": "Only placeholder services so apps don't crash.",
+   "issues": [],
+   "links": [
+    {
+     "label": "PR #2600",
+     "url": "https://github.com/microg/GmsCore/pull/2600"
+    },
+    {
+     "label": "PR #2760",
+     "url": "https://github.com/microg/GmsCore/pull/2760"
+    }
+   ]
+  },
+  {
+   "id": "fido",
+   "name": "Passkeys & FIDO2",
+   "area": "identity",
+   "status": "mostly",
+   "note": "FIDO2/U2F security keys work over USB and NFC. Passkeys (synced credentials) are the remaining gap.",
+   "issues": [
+    {
+     "n": 849,
+     "reactions": 116,
+     "comments": 112,
+     "state": "closed"
+    },
+    {
+     "n": 1961,
+     "reactions": 22,
+     "comments": 16,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "pay",
+   "name": "Google Pay / Wallet",
+   "area": "identity",
+   "status": "missing",
+   "note": "Payments and Wallet are not implemented. Contactless payment also depends on strong device attestation.",
+   "issues": [
+    {
+     "n": 361,
+     "reactions": 50,
+     "comments": 153,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "integrity-basic",
+   "name": "Play Integrity (basic)",
+   "area": "identity",
+   "status": "mostly",
+   "note": "Basic integrity checks and SafetyNet work for many apps.",
+   "issues": [
+    {
+     "n": 2253,
+     "reactions": 22,
+     "comments": 2,
+     "state": "closed"
+    }
+   ]
+  },
+  {
+   "id": "integrity-strong",
+   "name": "Play Integrity (device / strong)",
+   "area": "identity",
+   "status": "blocked",
+   "note": "Device and strong verdicts attest a Google-certified, locked device. Apps that require them (many banks, Wallet) reject de-Googled phones by design. This needs pressure on app makers and regulators, not code.",
+   "issues": [
+    {
+     "n": 2655,
+     "reactions": 37,
+     "comments": 4,
+     "state": "closed"
+    }
+   ]
+  },
+  {
+   "id": "account",
+   "name": "Google account sign-in",
+   "area": "identity",
+   "status": "partial",
+   "note": "Account login works; the wiki lists it as partial because of past regressions and edge cases.",
+   "issues": [
+    {
+     "n": 2397,
+     "reactions": 23,
+     "comments": 20,
+     "state": "closed"
+    }
+   ]
+  },
+  {
+   "id": "smartlock",
+   "name": "Smart Lock / password save",
+   "area": "identity",
+   "status": "missing",
+   "note": "Smart Lock for Passwords and related credential APIs.",
+   "issues": [
+    {
+     "n": 118,
+     "reactions": 16,
+     "comments": 13,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "firebase-auth",
+   "name": "Firebase Auth",
+   "area": "identity",
+   "status": "partial",
+   "note": "Anonymous, email/password, phone and custom-token login work. Google Sign-In and FirebaseUI do not.",
+   "issues": [
+    {
+     "n": 1198,
+     "reactions": 6,
+     "comments": 26,
+     "state": "closed"
+    },
+    {
+     "n": 1281,
+     "reactions": 0,
+     "comments": 19,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "games",
+   "name": "Play Games",
+   "area": "media",
+   "status": "partial",
+   "note": "Some games services work. The official Play Games app does not.",
+   "issues": [
+    {
+     "n": 163,
+     "reactions": 29,
+     "comments": 53,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "arcore",
+   "name": "ARCore",
+   "area": "media",
+   "status": "missing",
+   "note": "Augmented reality services.",
+   "issues": [
+    {
+     "n": 1672,
+     "reactions": 18,
+     "comments": 15,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "vision",
+   "name": "Vision / barcode",
+   "area": "media",
+   "status": "partial",
+   "note": "Only barcode scanning is implemented.",
+   "issues": [
+    {
+     "n": 395,
+     "reactions": 14,
+     "comments": 26,
+     "state": "open"
+    },
+    {
+     "n": 670,
+     "reactions": 1,
+     "comments": 23,
+     "state": "closed"
+    }
+   ]
+  },
+  {
+   "id": "face",
+   "name": "Face detection",
+   "area": "media",
+   "status": "partial",
+   "note": "Partly implemented.",
+   "issues": []
+  },
+  {
+   "id": "fonts",
+   "name": "Downloadable fonts",
+   "area": "media",
+   "status": "missing",
+   "note": "Listed as not implemented in the wiki; the tracking issue was closed in 2026, check for updates.",
+   "issues": [
+    {
+     "n": 797,
+     "reactions": 8,
+     "comments": 2,
+     "state": "closed"
+    }
+   ]
+  },
+  {
+   "id": "location",
+   "name": "Fused location",
+   "area": "location",
+   "status": "works",
+   "note": "Works. Mozilla Location Service retired, see the linked discussions for how network location works now.",
+   "issues": [
+    {
+     "n": 2237,
+     "reactions": 24,
+     "comments": 117,
+     "state": "closed"
+    },
+    {
+     "n": 1944,
+     "reactions": 14,
+     "comments": 28,
+     "state": "open"
+    }
+   ]
+  },
+  {
+   "id": "maps",
+   "name": "Maps API v2",
+   "area": "location",
+   "status": "mostly",
+   "note": "The Mapbox-based build works for most apps with minor glitches. The VTM build lacks many APIs.",
+   "issues": []
+  },
+  {
+   "id": "geofencing",
+   "name": "Geofencing",
+   "area": "location",
+   "status": "missing",
+   "note": "Not implemented.",
+   "issues": []
+  },
+  {
+   "id": "inapp-updates",
+   "name": "In-app updates",
+   "area": "platform",
+   "status": "missing",
+   "note": "Only a placeholder service so apps don't crash.",
+   "issues": [],
+   "links": [
+    {
+     "label": "PR #2759",
+     "url": "https://github.com/microg/GmsCore/pull/2759"
+    }
+   ]
+  },
+  {
+   "id": "asset",
+   "name": "Play asset delivery",
+   "area": "platform",
+   "status": "mostly",
+   "note": "Mostly works.",
+   "issues": []
+  },
+  {
+   "id": "split",
+   "name": "Split install",
+   "area": "platform",
+   "status": "partial",
+   "note": "Partly implemented, some apps crash.",
+   "issues": []
+  },
+  {
+   "id": "sms",
+   "name": "SMS retriever",
+   "area": "platform",
+   "status": "mostly",
+   "note": "Mostly works (automatic SMS code entry).",
+   "issues": []
+  },
+  {
+   "id": "drive",
+   "name": "Drive API",
+   "area": "platform",
+   "status": "works",
+   "note": "Implemented.",
+   "issues": []
+  },
+  {
+   "id": "ads",
+   "name": "Ads & analytics",
+   "area": "platform",
+   "status": "notIntended",
+   "note": "Mobile ads, Analytics and Firebase Analytics are left out on purpose.",
+   "issues": []
+  }
+ ]
+}
